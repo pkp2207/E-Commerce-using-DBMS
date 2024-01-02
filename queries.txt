@@ -1,0 +1,84 @@
+--Cart Table
+CREATE TABLE Cart_Ecommerce(
+    Cart_id VARCHAR(7) NOT NULL,
+    PRIMARY KEY(Cart_id)
+);
+
+--Customers Table
+CREATE TABLE Customers_Ecommerce(
+    Customer_id VARCHAR(10) NOT NULL,
+    Customer_Name VARCHAR(25) NOT NULL,
+    Address VARCHAR(20) NOT NULL,
+    Pincode NUMBER(6) NOT NULL,
+    Phone_number number(10) NOT NULL,
+    PRIMARY KEY (Customer_id),
+    Cart_id VARCHAR(7) NOT NULL,
+    FOREIGN KEY(Cart_id) REFERENCES CART_ECOMMERCE(Cart_id)
+);
+
+--Seller Table
+CREATE TABLE Seller_Ecommerce(
+    Seller_id VARCHAR(6) NOT NULL,
+    Name VARCHAR(20) NOT NULL,
+    Email_id varchar(50) NOT NULL,
+    Phone_number number(10) NOT NULL,
+    Address VARCHAR(10) NOT NULL,
+    PRIMARY KEY (Seller_id),
+    CONSTRAINT CHECK_Email_id CHECK (Email_id LIKE '%@%') 
+);  
+
+--Category Table
+CREATE TABLE Category_ECommerce(
+    Category_id VARCHAR(6) NOT NULL,
+    Category_Name VARCHAR(30) NOT NULL,
+    PRIMARY KEY(Category_id)
+);
+
+--Product Table
+CREATE TABLE Product_Ecommerce(
+    Product_id VARCHAR(7) NOT NULL,
+    Product_Name VARCHAR(50) NOT NULL,
+    Product_Categoryid VARCHAR(30) NOT NULL,
+    Color VARCHAR(15) NOT NULL,
+    P_Size VARCHAR(2) NOT NULL,
+    Gender CHAR(1) NOT NULL,
+    Website_Commission NUMBER(2) NOT NULL,
+    Cost NUMBER(7) NOT NULL,
+    Quantity NUMBER(4) NOT NULL,
+    Seller_id VARCHAR(6),
+    PRIMARY KEY (Product_id),
+    FOREIGN KEY (Seller_id) REFERENCES Seller_Ecommerce(Seller_id)
+    ON DELETE SET NULL,
+    FOREIGN KEY (Product_Categoryid) REFERENCES Category_Ecommerce(Category_id)
+    ON DELETE SET NULL      
+);
+
+--Login Details Table
+CREATE TABLE Login_Details_Ecommerce(
+    Username VARCHAR(30) NOT NULL,
+    User_Password VARCHAR(30) NOT NULL,
+    PRIMARY KEY(Username),
+    CONSTRAINT CHECK_Password CHECK (LENGTH(User_Password) >= 8)
+);
+
+--Payment Table
+CREATE TABLE Payment_Ecommerce(
+    payment_id VARCHAR(7) NOT NULL,
+    payment_date DATE NOT NULL,
+    Payment_type VARCHAR(10) NOT NULL,
+    Customer_id VARCHAR(6) NOT NULL,
+    Cart_id VARCHAR(7) NOT NULL,
+    PRIMARY KEY (payment_id),
+    FOREIGN KEY (Customer_id) REFERENCES Customers_ECOMMERCE(Customer_id),
+    FOREIGN KEY (Cart_id) REFERENCES Cart_ECOMMERCE(Cart_id),
+    total_amount numeric(9)
+);
+--describing each table
+use dbmsproject;
+desc cart_ecommerce;
+desc category_ecommerce;
+desc customers_ecommerce;
+desc login_details_ecommerce;
+desc payment_ecommerce;
+desc product_ecommerce;
+desc seller_ecommerce;
